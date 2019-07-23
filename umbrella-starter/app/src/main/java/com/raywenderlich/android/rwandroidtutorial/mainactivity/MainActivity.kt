@@ -28,52 +28,45 @@
  * THE SOFTWARE.
  */
 
-package com.raywenderlich.android.rwandroidtutorial
+package com.raywenderlich.android.rwandroidtutorial.mainactivity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.ImageView
+import com.raywenderlich.android.rwandroidtutorial.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainActivityContract.View {
+
   internal lateinit var imageView: ImageView
   internal lateinit var button: Button
-  val weatherRepository: WeatherRepository = WeatherRepositoryImpl()
+  internal lateinit var presenter: MainActivityContract.Presenter
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
+    setPresenter(MainActivityPresenter(this, MainActivityDependencyInjectorImpl()))
 
     imageView = findViewById(R.id.imageView)
     button = findViewById(R.id.button)
-    button.setOnClickListener { loadWeather() }
-    loadWeather()
+    button.setOnClickListener { presenter.onLoadWeatherTapped() }
+    presenter.onViewCreated()
   }
 
-  fun displayWeatherState(weatherState: WeatherState) {
+  override fun displayWeatherState(weatherState: WeatherState) {
     val drawable = resources.getDrawable(weatherDrawableResId(weatherState),
-            applicationContext.getTheme())
+            applicationContext.theme)
     this.imageView.setImageDrawable(drawable)
   }
 
-  fun weatherDrawableResId(weatherState: WeatherState) : Int {
+  override fun setPresenter(presenter: MainActivityContract.Presenter) {
+    this.presenter = presenter
+  }
+
+  fun weatherDrawableResId(weatherState: WeatherState): Int {
     return when (weatherState) {
       WeatherState.SUN -> R.drawable.ic_sun
       WeatherState.RAIN -> R.drawable.ic_umbrella
     }
   }
-
-  private fun loadWeather() {
-    val weather = weatherRepository.loadWeather()
-    val weatherState = weatherStateForWeather(weather)
-    displayWeatherState(weatherState)
-  }
-
-  private fun weatherStateForWeather(weather: Weather) : WeatherState {
-    if (weather.rain!!.amount!! > 0) {
-      return WeatherState.RAIN
-    }
-    return WeatherState.SUN
-  }
 }
-

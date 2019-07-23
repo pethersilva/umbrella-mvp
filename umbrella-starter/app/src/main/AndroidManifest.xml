@@ -20,7 +20,7 @@
     </activity>
 
     <!-- Main Activity -->
-    <activity android:name=".MainActivity"/>
+    <activity android:name=".mainactivity.MainActivity"/>
   </application>
 
 </manifest>
