@@ -43,6 +43,9 @@ dependencies {
 
   //JSON PARSING
   implementation "com.squareup.moshi:moshi:$moshiVersion"
+
+  // Add mockito to your project
+  testImplementation 'org.mockito:mockito-core:2.22.0'
 }
 
 apply from: "${rootProject.projectDir}/gradle/testVerbose.gradle"

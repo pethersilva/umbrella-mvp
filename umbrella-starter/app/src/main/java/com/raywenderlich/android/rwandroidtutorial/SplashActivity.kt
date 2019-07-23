@@ -36,6 +36,7 @@ import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.view.Window
 import android.view.WindowManager
+import com.raywenderlich.android.rwandroidtutorial.mainactivity.MainActivity
 
 /**
  * Splash Screen with the app icon and name at the center, this is also the launch screen and
